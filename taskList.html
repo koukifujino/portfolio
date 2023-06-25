@@ -17,6 +17,10 @@
   <link href="css/style.css" media="all" rel="stylesheet" type="text/css" />
   <link rel="shortcut icon" href="img/favicon.ico" />
   <link rel=”canonical” href=”URLが入る” />
+
+  <!-- PWAのマニュフェストJSON -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#00729f">
 </head>
 
 <body>
@@ -69,6 +73,17 @@
       <div class="page-top" id="js-page-top">
         <span class="material-icons-outlined">expand_less</span>
       </div>
+
+      <!-- Service Workerの読み込み -->
+      <script>
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('./sw.js').then(registration => {
+            console.log('ServiceWorker registration successful.');
+          }).catch(err => {
+            console.log('ServiceWorker registration failed.');
+          });
+        }
+      </script>
     </main>
 
     <!-- footer -->

@@ -11,8 +11,9 @@
   <link href="css/style.css" media="all" rel="stylesheet" type="text/css" />
   <link rel="shortcut icon" href="img/favicon.ico" />
   <link rel=”canonical” href=”URLが入る” />
-
+<!-- PWAのマニュフェストJSON -->
   <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#00729f">
 </head>
 
 <body>
@@ -49,9 +50,6 @@
         <div class="mv-container">
           <p class="mv-title">PORTFOLIO</p>
           <p class="mv-subtitle">K.F</p>
-          <p class="mv-text">
-            見やすいポートフォリオ心掛けています。<br>どうぞよろしくお願いいたします。<br>
-          </p>
         </div>
       </div>
       </div>
@@ -222,10 +220,10 @@
             </p>
             <div class="profile-body">
               <p>
-                東京理科大学を卒業後は建築関係の仕事につきましたがWeb制作の仕事をしたいと思い職業訓練からのスクールに通いWebの知識と技能を身につけました。その後は実務経験を経て仕事に取り組んでいます。
+                テキストテキストテキストテキスト
               </p>
               <p>
-                丁寧な制作を心がけています。またコミュニケーションを大切しています。生産性や効率を重視した仕事の取り組み方をいたします。
+                テキストテキストテキストテキスト
               </p>
             </div>
           </div>
@@ -246,15 +244,14 @@
       <div class="page-top" id="js-page-top">
         <span class="material-icons-outlined">expand_less</span>
       </div>
-
+      
+      <!-- Service Workerの読み込み -->
       <script>
         if ('serviceWorker' in navigator) {
-          window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/color-name/sw.js').then(function(registration) {
-              console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, function(err) {
-              console.log('ServiceWorker registration failed: ', err);
-            });
+          navigator.serviceWorker.register('./sw.js').then(registration => {
+            console.log('ServiceWorker registration successful.');
+          }).catch(err => {
+            console.log('ServiceWorker registration failed.');
           });
         }
       </script>

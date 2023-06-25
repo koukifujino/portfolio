@@ -1,28 +1,43 @@
-var CACHE_NAME = 'color-name';
-var urlsToCache = [
-    '/color-name/js/main.js',
-    '/color-name/css/normalize.css',
-    '/color-name/css/common.css'
+const STATIC_DATA = [
+  
+  'index.html',
+  'model/museum.glb',
+  'babylonjs_js/babylon.js',
+  'babylonjs_js/babylonjs.loaders.min.js',
+  'babylonjs_js/babylonjs.material.min.js',
+  'babylonjs_js/babylon.gui.min.js',
+  'babylonjs_js/babylon.inspector.bundle.js',
+  'babylonjs_js/pep.js',
+  'js/TeleportCheck.js'
 ];
 
-// インストール処理
-self.addEventListener('install', function(event) {
-    event.waitUntil(
-        caches
-            .open(CACHE_NAME)
-            .then(function(cache) {
-                return cache.addAll(urlsToCache);
-            })
+const cacheName ='cache_v1';
+
+self.addEventListener('install', e => {
+    console.log('[ServiceWorker] Install');
+    e.waitUntil(
+      caches.open(cacheName).then(cache => {
+        return cache.addAll(STATIC_DATA)
+        .then(()=> self.skipWaiting());
+      })
     );
 });
-
-// リソースフェッチ時のキャッシュロード処理
-self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        caches
-            .match(event.request)
-            .then(function(response) {
-                return response || fetch(event.request);
-            })
-    );
+  
+self.addEventListener('activate', e => {
+  console.log('[ServiceWorker] Activate');
+  e.waitUntil(self.clients.claim());
+});
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((r) => {
+          console.log('[Service Worker] Fetching resource: '+e.request.url);
+      return r || fetch(e.request).then((response) => {
+                return caches.open(cacheName).then((cache) => {
+          console.log('[Service Worker] Caching new resource: '+e.request.url);
+          cache.put(e.request, response.clone());
+          return response;
+        });
+      });
+    })
+  );
 });
